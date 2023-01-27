@@ -3,26 +3,26 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: obibby <obibby@student.42.fr>              +#+  +:+       +#+         #
+#    By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 20:17:58 by libacchu          #+#    #+#              #
-#    Updated: 2023/01/27 16:41:21 by obibby           ###   ########.fr        #
+#    Updated: 2023/01/27 21:28:41 by obibby           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	car_demo
 OBJ_DIR =	obj/
-LIBMLX	=	./minilibx_linux/
+LIBMLX	=	./minilibx_mms/
 SRC_DIR =	src/
 SRC		=	main.c
 
 INC		=	car.h
 SYS		=	$(shell uname -s)
 ifeq ($(SYS), Linux)
-    LIBS    =    -Lminilibx_linux -lm -lmlx -lXext -lX11 -Iminilibx_linux
+    LIBS    =    -Lminilibx_mms -lm -lmlx -lXext -lX11 -Iminilibx_mms
 endif
 ifeq ($(SYS), Darwin)
-    LIBS    =    -L/usr/X11/lib -lX11 -lXext ./minilibx_linux/libmlx.a
+    LIBS    =    -L/usr/X11/lib -lX11 -lXext ./minilibx_mms/libmlx.dylib
 endif
 SRCS	=	$(addprefix $(SRC_DIR), $(SRC))
 OBJ		=	$(SRCS:%.c=$(OBJ_DIR)%.o)
@@ -40,6 +40,7 @@ $(OBJ_DIR)%.o : %.c
 	@$(CC) $(CFLAGS) -c -g $< -o $@
 
 $(NAME) : $(OBJ) $(INC)
+	@printf "\n"
 	make -C $(LIBMLX)
 	@printf "\33[2K\r$(GREY)Compiling $(BLUE)$(NAME)$(RESET)\n"
 	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBS)
