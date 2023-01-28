@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obibby <obibby@student.42.fr>              +#+  +:+       +#+        */
+/*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/01/28 16:01:09 by obibby           ###   ########.fr       */
+/*   Updated: 2023/01/28 19:16:50 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../car.h"
 
+// puts a pixel to an image.
 void	put_pixel(t_image *img, int x, int y, int colour)
 {
 	char	*dst;
@@ -20,6 +21,7 @@ void	put_pixel(t_image *img, int x, int y, int colour)
 	*(int*)dst = colour;
 }
 
+// finds colour of individual pixel in car image.
 int	get_pixel_colour(t_image *img, int x, int y)
 {
 	int	colour;
@@ -29,6 +31,7 @@ int	get_pixel_colour(t_image *img, int x, int y)
 	return (colour);
 }
 
+// puts car image to an image.
 void	put_image(t_image *dest, t_image *src)
 {
 	int	x;
@@ -47,11 +50,13 @@ void	put_image(t_image *dest, t_image *src)
 	}
 }
 
+// encodes an int with trgb colour values.
 int	colourshift(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
+// for displaying rear right light on window.
 int	rear_right_main(t_car *car)
 {
 	int	x;
@@ -70,6 +75,7 @@ int	rear_right_main(t_car *car)
 	return (0);
 }
 
+// for displaying rear left light on window.
 int	rear_left_main(t_car *car)
 {
 	int	x;
@@ -88,6 +94,7 @@ int	rear_left_main(t_car *car)
 	return (0);
 }
 
+// for displaying front right light on window.
 int	front_right_main(t_car *car)
 {
 	int	x;
@@ -106,6 +113,7 @@ int	front_right_main(t_car *car)
 	return (0);
 }
 
+// for displaying front left light on window.
 int	front_left_main(t_car *car)
 {
 	int	x;
@@ -124,7 +132,8 @@ int	front_left_main(t_car *car)
 	return (0);
 }
 
-int	temp_main_func(t_car *car)
+// puts car image to window, then checks if lights are on and their intensity, then puts them to the image.
+int	light_loop(t_car *car)
 {
 	mlx_clear_window(car->mlx, car->window);
 	mlx_put_image_to_window(car->mlx, car->window, car->xpm.img, 0, 0);
@@ -143,6 +152,7 @@ int	temp_main_func(t_car *car)
 	return (0);
 }
 
+// frees all allocated memory and exits.
 int ft_free(t_car *car)
 {
 	mlx_destroy_image(car->mlx, car->image.img);
@@ -151,6 +161,7 @@ int ft_free(t_car *car)
 	exit(0);
 }
 
+// temporary measure for displaying changes in the light and intensity variables.
 int	key_press(int keycode, t_car *car)
 {
 	if (keycode == KEY_ESC)
@@ -192,6 +203,7 @@ int	key_press(int keycode, t_car *car)
 	return (0);
 }
 
+// initialise the car struct.
 void	init_vars(t_car *car)
 {
 	car->strength_front = 10;
@@ -216,6 +228,6 @@ int	main()
 	mlx_put_image_to_window(car.mlx, car.window, car.xpm.img, 0, 0);
 	mlx_hook(car.window, 17, 0, ft_free, &car);
 	mlx_hook(car.window, 2, 1L << 0, key_press, &car);
-	mlx_loop_hook(car.mlx, temp_main_func, &car);
+	mlx_loop_hook(car.mlx, light_loop, &car);
 	mlx_loop(car.mlx);
 }

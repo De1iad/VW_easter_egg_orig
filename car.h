@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   car.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obibby <obibby@student.42.fr>              +#+  +:+       +#+        */
+/*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:03:35 by obibby            #+#    #+#             */
-/*   Updated: 2023/01/28 16:00:14 by obibby           ###   ########.fr       */
+/*   Updated: 2023/01/28 19:19:37 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ typedef struct s_image
 
 typedef struct s_car
 {
-	void	*mlx;
-	void	*window;
-	t_image	xpm;
-	t_image	image;
-	int	front_lights;
-	int	rear_lights;
-	unsigned short	strength_front;
-	unsigned short	strength_rear;
+	void	*mlx; // the mlx pointer.
+	void	*window; // pointer to the active window.
+	t_image	xpm; // xpm image of the car.
+	t_image	image; // image used to buffer before pushing to window.
+	int	front_lights; // lights off == 0, lights on == 1.
+	int	rear_lights; // lights off == 0, lights on == 1.
+	unsigned short	strength_front; // intensity of the light, 0-1000.
+	unsigned short	strength_rear; // intensity of the light, 0-1000.
 } t_car;

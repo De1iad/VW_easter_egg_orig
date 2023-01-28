@@ -6,7 +6,7 @@
 #    By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 20:17:58 by libacchu          #+#    #+#              #
-#    Updated: 2023/01/28 16:24:22 by obibby           ###   ########.fr        #
+#    Updated: 2023/01/28 19:01:48 by obibby           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,14 +41,14 @@ $(OBJ_DIR)%.o : %.c
 
 $(NAME) : $(OBJ) $(INC)
 	@printf "\n"
-	make -C $(LIBMLX)
+	@make -C $(LIBMLX)
 	@cp ./minilibx_mms/libmlx.dylib .
 	@printf "\33[2K\r$(GREY)Compiling $(BLUE)$(NAME)$(RESET)\n"
 	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBS)
 
 clean :
 	@printf "$(GREY)Removing $(BLUE)$(OBJ)$(RESET)\n"
-	make clean -C $(LIBMLX)
+	@make clean -C $(LIBMLX)
 	@rm -fr $(OBJ_DIR)
 
 fclean : clean
