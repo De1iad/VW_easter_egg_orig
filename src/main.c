@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: obibby <obibby@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/01/28 00:06:17 by obibby           ###   ########.fr       */
+/*   Updated: 2023/01/28 16:01:09 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	put_pixel(t_image *img, int x, int y, int colour)
 
 	dst = img->addr + (y * img->line_size + x * (img->bpp / 8));
 	*(int*)dst = colour;
-	//printf("HERE2\n");
 }
 
 int	get_pixel_colour(t_image *img, int x, int y)
@@ -26,8 +25,7 @@ int	get_pixel_colour(t_image *img, int x, int y)
 	int	colour;
 
 	colour = *(int *)(img->addr + y % 480 * img->line_size
-			+ x % 538 * (img->bpp / 8));
-	//printf("HERE1\n");
+			+ x % 538 * (img->bpp / 8));                                                                                                                                                                                                                                                                                                                                           
 	return (colour);
 }
 
@@ -66,7 +64,7 @@ int	rear_right_main(t_car *car)
 	{
 		x = 340 - f;
 		while (++x < 340)
-			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_rear), 252, 3, 3));
+			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_rear * 0.001), 252, 3, 3));
 		f++;
 	}
 	return (0);
@@ -84,7 +82,7 @@ int	rear_left_main(t_car *car)
 	{
 		x = 440;
 		while (++x < f)
-			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_rear), 252, 3, 3));
+			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_rear * 0.001), 252, 3, 3));
 		f++;
 	}
 	return (0);
@@ -102,7 +100,7 @@ int	front_right_main(t_car *car)
 	{
 		x = 203;
 		while (++x < f)
-			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_front), 252, 236, 3));
+			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_front * 0.001), 252, 236, 3));
 		f++;
 	}
 	return (0);
@@ -120,7 +118,7 @@ int	front_left_main(t_car *car)
 	{
 		x = 90 - f;
 		while (++x < 90)
-			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_front), 252, 236, 3));
+			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_front * 0.001), 252, 236, 3));
 		f++;
 	}
 	return (0);
@@ -132,10 +130,16 @@ int	temp_main_func(t_car *car)
 	mlx_put_image_to_window(car->mlx, car->window, car->xpm.img, 0, 0);
 	mlx_put_image_to_window(car->mlx, car->window, car->image.img, 0, 0);
 	put_image(&car->image, &car->xpm);
-	rear_left_main(car);
-	rear_right_main(car);
-	front_left_main(car);
-	front_right_main(car);
+	if (car->rear_lights)
+	{
+		rear_left_main(car);
+		rear_right_main(car);
+	}
+	if (car->front_lights)
+	{
+		front_left_main(car);
+		front_right_main(car);
+	}
 	return (0);
 }
 
@@ -144,7 +148,6 @@ int ft_free(t_car *car)
 	mlx_destroy_image(car->mlx, car->image.img);
 	mlx_destroy_image(car->mlx, car->xpm.img);
 	mlx_destroy_window(car->mlx, car->window);
-	// mlx_destroy_display(car->mlx);
 	exit(0);
 }
 
@@ -154,31 +157,47 @@ int	key_press(int keycode, t_car *car)
 		ft_free(car);
 	else if (keycode == KEY_UP)
 	{
-		if (car->strength_front < 0.8)
-			car->strength_front += 0.05;
+		if (car->strength_front < 800)
+			car->strength_front += 50;
 	}
 	else if (keycode == KEY_DOWN)
 	{
-		if (car->strength_front > 0.05)
-			car->strength_front -= 0.05;
+		if (car->strength_front > 50)
+			car->strength_front -= 50;
 	}
 	else if (keycode == KEY_RIGHT)
 	{
-		if (car->strength_rear < 0.8)
-			car->strength_rear += 0.05;
+		if (car->strength_rear < 800)
+			car->strength_rear += 50;
 	}
 	else if (keycode == KEY_LEFT)
 	{
-		if (car->strength_rear > 0.05)
-			car->strength_rear -= 0.05;
+		if (car->strength_rear > 50)
+			car->strength_rear -= 50;
+	}
+	else if (keycode == KEY_F)
+	{
+		if (car->front_lights)
+			car->front_lights = 0;
+		else
+			car->front_lights = 1;
+	}
+	else if (keycode == KEY_R)
+	{
+		if (car->rear_lights)
+			car->rear_lights = 0;
+		else
+			car->rear_lights = 1;
 	}
 	return (0);
 }
 
 void	init_vars(t_car *car)
 {
-	car->strength_front = 0.01;
-	car->strength_rear = 0.01;
+	car->strength_front = 10;
+	car->strength_rear = 10;
+	car->front_lights = 0;
+	car->rear_lights = 0;
 }
 
 int	main()

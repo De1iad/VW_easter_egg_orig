@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   car.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
+/*   By: obibby <obibby@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:03:35 by obibby            #+#    #+#             */
-/*   Updated: 2023/01/27 22:29:47 by obibby           ###   ########.fr       */
+/*   Updated: 2023/01/28 16:00:14 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,12 @@
 
 #ifdef __APPLE__
 	#define KEY_ESC 53
-		// KEY_W = 119,
-		// KEY_A = 97,
-		// KEY_S = 115,
-		// KEY_D = 100,
 	#define KEY_UP 126
 	#define	KEY_LEFT 123
 	#define KEY_RIGHT 124
 	#define	KEY_DOWN 125
-		// KEY_TAB = 65289,
-		// KEY_SHIFT = 65505,
+	#define	KEY_F 3
+	#define KEY_R 15
 #else
 	#define	KEY_ESC 65307
 		// KEY_W = 119,
@@ -56,6 +52,8 @@ typedef struct s_car
 	void	*window;
 	t_image	xpm;
 	t_image	image;
-	double	strength_front;
-	double	strength_rear;
+	int	front_lights;
+	int	rear_lights;
+	unsigned short	strength_front;
+	unsigned short	strength_rear;
 } t_car;
