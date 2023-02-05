@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/01/28 19:16:50 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/05 01:25:52 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	get_pixel_colour(t_image *img, int x, int y)
 	return (colour);
 }
 
-// puts car image to an image.
+// puts car image to an image, setting alpha to zero.
 void	put_image(t_image *dest, t_image *src)
 {
 	int	x;
@@ -45,6 +45,14 @@ void	put_image(t_image *dest, t_image *src)
 		while (++y < 480)
 		{
 			colour = get_pixel_colour(src, x, y);
+			colour |= 1UL << 24;
+			colour |= 1UL << 25;
+			colour |= 1UL << 26;
+			colour |= 1UL << 27;
+			colour |= 1UL << 28;
+			colour |= 1UL << 29;
+			colour |= 1UL << 30;
+			colour |= 1UL << 31;
 			put_pixel(dest, x, y, colour);
 		}
 	}
@@ -56,99 +64,111 @@ int	colourshift(int t, int r, int g, int b)
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-// for displaying rear right light on window.
+// draw rear right light to image.
 int	rear_right_main(t_car *car)
 {
 	int	x;
 	int	y;
-	int	f;
+	int	x_length;
+	double	alpha;
 
-	f = 35;
+	x_length = 35;
 	y = 122;
+	if (!car->rear_lights)
+		alpha = 0;
+	else
+		alpha = car->strength_rear * 0.0008;
 	while (++y < 200)
 	{
-		x = 340 - f;
+		x = 340 - x_length;
 		while (++x < 340)
-			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_rear * 0.001), 252, 3, 3));
-		f++;
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 3 * alpha, 3 * alpha));
+		x_length++;
 	}
 	return (0);
 }
 
-// for displaying rear left light on window.
+// draw rear left light to image.
 int	rear_left_main(t_car *car)
 {
 	int	x;
 	int	y;
-	int	f;
+	int	x_length;
+	double	alpha;
 
-	f = 475;
+	x_length = 475;
 	y = 122;
+	if (!car->rear_lights)
+		alpha = 0;
+	else
+		alpha = car->strength_rear * 0.0008;
 	while (++y < 200)
 	{
 		x = 440;
-		while (++x < f)
-			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_rear * 0.001), 252, 3, 3));
-		f++;
+		while (++x < x_length)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 3 * alpha, 3 * alpha));
+		x_length++;
 	}
 	return (0);
 }
 
-// for displaying front right light on window.
+// draw front right light to image.
 int	front_right_main(t_car *car)
 {
 	int	x;
 	int	y;
-	int	f;
+	int	x_length;
+	double	alpha;
 
-	f = 233;
+	x_length = 233;
 	y = 122;
+	if (!car->front_lights)
+		alpha = 0;
+	else
+		alpha = car->strength_front * 0.0008;
 	while (++y < 200)
 	{
 		x = 203;
-		while (++x < f)
-			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_front * 0.001), 252, 236, 3));
-		f++;
+		while (++x < x_length)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
+		x_length++;
 	}
 	return (0);
 }
 
-// for displaying front left light on window.
+// draw front left light to image.
 int	front_left_main(t_car *car)
 {
 	int	x;
 	int	y;
-	int	f;
+	int	x_length;
+	double	alpha;
 
-	f = 30;
+	x_length = 30;
 	y = 122;
+	if (!car->front_lights)
+		alpha = 0;
+	else
+		alpha = car->strength_front * 0.0008;
 	while (++y < 200)
 	{
-		x = 90 - f;
+		x = 90 - x_length;
 		while (++x < 90)
-			put_pixel(&car->image, x, y, colourshift(255 * (1 - car->strength_front * 0.001), 252, 236, 3));
-		f++;
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
+		x_length++;
 	}
 	return (0);
 }
 
-// puts car image to window, then checks if lights are on and their intensity, then puts them to the image.
+// puts car image and light image to window, updates light image with new values.
 int	light_loop(t_car *car)
 {
-	mlx_clear_window(car->mlx, car->window);
-	mlx_put_image_to_window(car->mlx, car->window, car->xpm.img, 0, 0);
 	mlx_put_image_to_window(car->mlx, car->window, car->image.img, 0, 0);
-	put_image(&car->image, &car->xpm);
-	if (car->rear_lights)
-	{
-		rear_left_main(car);
-		rear_right_main(car);
-	}
-	if (car->front_lights)
-	{
-		front_left_main(car);
-		front_right_main(car);
-	}
+	mlx_put_image_to_window(car->mlx, car->window, car->alpha_image.img, 0, 0);
+	rear_left_main(car);
+	rear_right_main(car);
+	front_left_main(car);
+	front_right_main(car);
 	return (0);
 }
 
@@ -156,8 +176,8 @@ int	light_loop(t_car *car)
 int ft_free(t_car *car)
 {
 	mlx_destroy_image(car->mlx, car->image.img);
-	mlx_destroy_image(car->mlx, car->xpm.img);
-	mlx_destroy_window(car->mlx, car->window);
+	mlx_destroy_image(car->mlx, car->alpha_image.img);
+	mlx_destroy_display(car->mlx);
 	exit(0);
 }
 
@@ -168,7 +188,7 @@ int	key_press(int keycode, t_car *car)
 		ft_free(car);
 	else if (keycode == KEY_UP)
 	{
-		if (car->strength_front < 800)
+		if (car->strength_front < 950)
 			car->strength_front += 50;
 	}
 	else if (keycode == KEY_DOWN)
@@ -178,7 +198,7 @@ int	key_press(int keycode, t_car *car)
 	}
 	else if (keycode == KEY_RIGHT)
 	{
-		if (car->strength_rear < 800)
+		if (car->strength_rear < 950)
 			car->strength_rear += 50;
 	}
 	else if (keycode == KEY_LEFT)
@@ -206,8 +226,8 @@ int	key_press(int keycode, t_car *car)
 // initialise the car struct.
 void	init_vars(t_car *car)
 {
-	car->strength_front = 10;
-	car->strength_rear = 10;
+	car->strength_front = 50;
+	car->strength_rear = 50;
 	car->front_lights = 0;
 	car->rear_lights = 0;
 }
@@ -225,7 +245,10 @@ int	main()
 	car.image.addr = mlx_get_data_addr(car.image.img, &car.image.bpp, &car.image.line_size, &car.image.endian);
 	car.xpm.img = mlx_xpm_file_to_image(car.mlx, "images/car.xpm", &x, &y);
 	car.xpm.addr = mlx_get_data_addr(car.xpm.img, &car.xpm.bpp, &car.xpm.line_size, &car.xpm.endian);
-	mlx_put_image_to_window(car.mlx, car.window, car.xpm.img, 0, 0);
+	put_image(&car.image, &car.xpm);
+	mlx_destroy_image(car.mlx, car.xpm.img);
+	car.alpha_image.img = mlx_new_image_alpha(car.mlx, 538, 480);
+	car.alpha_image.addr = mlx_get_data_addr(car.alpha_image.img, &car.alpha_image.bpp, &car.alpha_image.line_size, &car.alpha_image.endian);
 	mlx_hook(car.window, 17, 0, ft_free, &car);
 	mlx_hook(car.window, 2, 1L << 0, key_press, &car);
 	mlx_loop_hook(car.mlx, light_loop, &car);

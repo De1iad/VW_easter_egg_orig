@@ -6,11 +6,11 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:03:35 by obibby            #+#    #+#             */
-/*   Updated: 2023/01/28 19:19:37 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/05 00:35:24 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minilibx_mms/mlx.h"
+#include "minilibx_linux/mlx.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -33,8 +33,8 @@
 	#define KEY_LEFT 65361
 	#define	KEY_RIGHT 65363
 	#define	KEY_DOWN 65364
-		// KEY_TAB = 65289,
-		// KEY_SHIFT = 65505,
+	#define	KEY_F 102
+	#define	KEY_R 114
 #endif
 
 typedef struct s_image
@@ -52,6 +52,7 @@ typedef struct s_car
 	void	*window; // pointer to the active window.
 	t_image	xpm; // xpm image of the car.
 	t_image	image; // image used to buffer before pushing to window.
+	t_image	alpha_image;
 	int	front_lights; // lights off == 0, lights on == 1.
 	int	rear_lights; // lights off == 0, lights on == 1.
 	unsigned short	strength_front; // intensity of the light, 0-1000.
