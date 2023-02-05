@@ -6,7 +6,7 @@
 #    By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 20:17:58 by libacchu          #+#    #+#              #
-#    Updated: 2023/02/04 23:36:52 by obibby           ###   ########.fr        #
+#    Updated: 2023/02/05 12:54:03 by obibby           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,13 +17,11 @@ SRC_DIR =	src/
 SRC		=	main.c
 INC		=	car.h
 SYS		=	$(shell uname -s)
-# ifeq ($(SYS), Linux)
-#     LIBS    =    -Lminilibx_linux -lm -lmlx -lXext -lX11
-# endif
-# ifeq ($(SYS), Darwin)
-#     LIBS    =    -L/usr/X11/lib -lX11 -lXext ./minilibx_linux/libmlx.a
-# endif
-LIBS    =    -Lminilibx_linux -lm -lmlx -lXext -lX11 -lXrender
+ifeq ($(SYS), Linux)
+    LIBS    =    -Lminilibx_linux -lmlx -lm -lXext -lX11 -lXrender
+else
+    LIBS    =    -Lminilibx_linux -lmlx -L/usr/X11/lib -lX11 -lXext -lXrender
+endif
 SRCS	=	$(addprefix $(SRC_DIR), $(SRC))
 OBJ		=	$(SRCS:%.c=$(OBJ_DIR)%.o)
 CC		=	gcc
@@ -42,7 +40,6 @@ $(OBJ_DIR)%.o : %.c
 $(NAME) : $(OBJ) $(INC)
 	@printf "\n"
 	@make -C $(LIBMLX)
-#	@cp ./minilibx_mms/libmlx.dylib .
 	@printf "\33[2K\r$(GREY)Compiling $(BLUE)$(NAME)$(RESET)\n"
 	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBS)
 
@@ -53,7 +50,6 @@ clean :
 
 fclean : clean
 	@printf "$(GREY)Removing $(BLUE)$(NAME)$(RESET)\n"
-#	@rm libmlx.dylib
 	@rm -f $(NAME)
 
 re : fclean all
