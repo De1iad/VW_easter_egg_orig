@@ -1,4 +1,4 @@
 obj/
 car_demo
-libmlx.dylib
-minilibx_mms/
+minilibx_linux/
+logs/

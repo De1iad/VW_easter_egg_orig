@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/05 01:25:52 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/05 16:14:04 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	get_pixel_colour(t_image *img, int x, int y)
 {
 	int	colour;
 
-	colour = *(int *)(img->addr + y % 480 * img->line_size
-			+ x % 538 * (img->bpp / 8));                                                                                                                                                                                                                                                                                                                                           
+	colour = *(int *)(img->addr + y % 782 * img->line_size
+			+ x % 960 * (img->bpp / 8));                                                                                                                                                                                                                                                                                                                                           
 	return (colour);
 }
 
@@ -39,10 +39,10 @@ void	put_image(t_image *dest, t_image *src)
 	int	colour;
 
 	x = -1;
-	while (++x < 538)
+	while (++x < 960)
 	{
 		y = -1;
-		while (++y < 480)
+		while (++y < 782)
 		{
 			colour = get_pixel_colour(src, x, y);
 			colour |= 1UL << 24;
@@ -73,15 +73,15 @@ int	rear_right_main(t_car *car)
 	double	alpha;
 
 	x_length = 35;
-	y = 122;
+	y = 130;
 	if (!car->rear_lights)
 		alpha = 0;
 	else
 		alpha = car->strength_rear * 0.0008;
-	while (++y < 200)
+	while (++y < 250)
 	{
-		x = 340 - x_length;
-		while (++x < 340)
+		x = 658 - x_length;
+		while (++x < 658)
 			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 3 * alpha, 3 * alpha));
 		x_length++;
 	}
@@ -96,15 +96,15 @@ int	rear_left_main(t_car *car)
 	int	x_length;
 	double	alpha;
 
-	x_length = 475;
-	y = 122;
+	x_length = 840;
+	y = 130;
 	if (!car->rear_lights)
 		alpha = 0;
 	else
 		alpha = car->strength_rear * 0.0008;
-	while (++y < 200)
+	while (++y < 250)
 	{
-		x = 440;
+		x = 805;
 		while (++x < x_length)
 			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 3 * alpha, 3 * alpha));
 		x_length++;
@@ -120,15 +120,15 @@ int	front_right_main(t_car *car)
 	int	x_length;
 	double	alpha;
 
-	x_length = 233;
-	y = 122;
+	x_length = 333;
+	y = 130;
 	if (!car->front_lights)
 		alpha = 0;
 	else
 		alpha = car->strength_front * 0.0008;
-	while (++y < 200)
+	while (++y < 250)
 	{
-		x = 203;
+		x = 303;
 		while (++x < x_length)
 			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
 		x_length++;
@@ -145,15 +145,15 @@ int	front_left_main(t_car *car)
 	double	alpha;
 
 	x_length = 30;
-	y = 122;
+	y = 130;
 	if (!car->front_lights)
 		alpha = 0;
 	else
 		alpha = car->strength_front * 0.0008;
-	while (++y < 200)
+	while (++y < 250)
 	{
-		x = 90 - x_length;
-		while (++x < 90)
+		x = 152 - x_length;
+		while (++x < 152)
 			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
 		x_length++;
 	}
@@ -240,14 +240,14 @@ int	main()
 
 	init_vars(&car);
 	car.mlx = mlx_init();
-	car.window = mlx_new_window(car.mlx, 538, 480, "VW Easter Egg Demo");
-	car.image.img = mlx_new_image(car.mlx, 538, 480);
+	car.window = mlx_new_window(car.mlx, 960, 782, "VW Easter Egg Demo");
+	car.image.img = mlx_new_image(car.mlx, 960, 782);
 	car.image.addr = mlx_get_data_addr(car.image.img, &car.image.bpp, &car.image.line_size, &car.image.endian);
 	car.xpm.img = mlx_xpm_file_to_image(car.mlx, "images/car.xpm", &x, &y);
 	car.xpm.addr = mlx_get_data_addr(car.xpm.img, &car.xpm.bpp, &car.xpm.line_size, &car.xpm.endian);
 	put_image(&car.image, &car.xpm);
 	mlx_destroy_image(car.mlx, car.xpm.img);
-	car.alpha_image.img = mlx_new_image_alpha(car.mlx, 538, 480);
+	car.alpha_image.img = mlx_new_image_alpha(car.mlx, 960, 782);
 	car.alpha_image.addr = mlx_get_data_addr(car.alpha_image.img, &car.alpha_image.bpp, &car.alpha_image.line_size, &car.alpha_image.endian);
 	mlx_hook(car.window, 17, 0, ft_free, &car);
 	mlx_hook(car.window, 2, 1L << 0, key_press, &car);
