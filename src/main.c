@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/11 13:17:21 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/11 20:03:39 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,10 +175,10 @@ int	front_right_main(t_car *car)
 // draw front left light to image.
 int	front_left_main(t_car *car)
 {
-	int			x;
-	int			y;
-	int			x_length;
-	double		alpha;
+	int		x;
+	int		y;
+	int		x_length;
+	double	alpha;
 
 	x_length = 30;
 	y = 130;
@@ -204,6 +204,112 @@ time_t	get_time_in_ms(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
+void	left_indicator_side(t_car *car)
+{
+	int		x;
+	int		y;
+	int		x_length;
+	double	alpha;
+
+	x_length = 11;
+	y = 421;
+	if (!EasterEggLightsEE.BlinkLightLeft)
+		alpha = 0;
+	else
+		alpha = EasterEggLightsEE.BlinkLightLeftPWM * 0.0008;
+	while (++y < 429)
+	{
+		x = 253 - x_length;
+		while (++x < 253)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
+	}
+}
+
+void	right_indicator_top(t_car *car)
+{
+	int		x;
+	int		y;
+	int		i;
+	int		y_length;
+	double	alpha;
+
+	y_length = 0;
+	x = 816;
+	i = 524;
+	if (!EasterEggLightsEE.BlinkLightRight)
+		alpha = 0;
+	else
+		alpha = EasterEggLightsEE.BlinkLightRightPWM * 0.0008;
+	while (++x < 825)
+	{
+		y = 517 - y_length;
+		while (++y < i)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
+		y_length++;
+		i++;
+	}
+}
+
+void	right_indicator_side(t_car *car)
+{
+	int		x;
+	int		y;
+	int		x_length;
+	double	alpha;
+
+	x_length = 11;
+	y = 570;
+	if (!EasterEggLightsEE.BlinkLightRight)
+		alpha = 0;
+	else
+		alpha = EasterEggLightsEE.BlinkLightRightPWM * 0.0008;
+	while (++y < 578)
+	{
+		x = 358 - x_length;
+		while (++x < 358)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
+	}
+}
+
+void	right_indicator(t_car *car)
+{
+	right_indicator_side(car);
+	right_indicator_top(car);
+}
+
+void	left_indicator_top(t_car *car)
+{
+	int		x;
+	int		y;
+	int		i;
+	int		y_length;
+	double	alpha;
+
+	y_length = 15;
+	x = 650;
+	i = 529;
+	if (!EasterEggLightsEE.BlinkLightLeft)
+		alpha = 0;
+	else
+		alpha = EasterEggLightsEE.BlinkLightLeftPWM * 0.0008;
+	while (++x < 659)
+	{
+		y = 522 - y_length;
+		while (++y < i)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
+		y_length--;
+		i--;
+	}
+}
+
+void	left_indicator(t_car *car)
+{
+	left_indicator_side(car);
+	left_indicator_top(car);
+	// left_indicator_front(car);
+	// left_indicator_rear(car);
+}
+
 // puts car image and light image to window, updates light image with new values.
 int	light_loop(t_car *car)
 {
@@ -218,6 +324,8 @@ int	light_loop(t_car *car)
 		front_right_main(car);
 		parking_light_left(car);
 		parking_light_right(car);
+		left_indicator(car);
+		right_indicator(car);
 		car->previous_time = car->current_time;
 	}
 	return (0);
@@ -276,7 +384,7 @@ int	main()
 	car.alpha_image.img = mlx_new_image_alpha(car.mlx, 960, 782);
 	car.alpha_image.addr = mlx_get_data_addr(car.alpha_image.img, &car.alpha_image.bpp, &car.alpha_image.line_size, &car.alpha_image.endian);
 	mlx_hook(car.window, 17, 0, ft_free, &car);
-	mlx_hook(car.window, 2, 1L << 0, key_press, &car);
+	//mlx_hook(car.window, 2, 1L << 0, key_press, &car);
 	mlx_loop_hook(car.mlx, light_loop, &car);
 	mlx_loop(car.mlx);
 }
