@@ -6,14 +6,19 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:03:35 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/05 00:35:24 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/11 12:48:37 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minilibx_linux/mlx.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
+#ifndef CAR_H
+# define CAR_H
+
+# include "minilibx_linux/mlx.h"
+# include "EasterEgg.h"
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <sys/time.h>
 
 #ifdef __APPLE__
 	#define KEY_ESC 53
@@ -53,8 +58,8 @@ typedef struct s_car
 	t_image	xpm; // xpm image of the car.
 	t_image	image; // image used to buffer before pushing to window.
 	t_image	alpha_image;
-	int	front_lights; // lights off == 0, lights on == 1.
-	int	rear_lights; // lights off == 0, lights on == 1.
-	unsigned short	strength_front; // intensity of the light, 0-1000.
-	unsigned short	strength_rear; // intensity of the light, 0-1000.
+	time_t	current_time;
+	time_t	previous_time;
 } t_car;
+
+#endif

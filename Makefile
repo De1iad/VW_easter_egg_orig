@@ -6,7 +6,7 @@
 #    By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 20:17:58 by libacchu          #+#    #+#              #
-#    Updated: 2023/02/05 13:37:25 by obibby           ###   ########.fr        #
+#    Updated: 2023/02/11 12:42:38 by obibby           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ NAME	=	car_demo
 OBJ_DIR =	obj/
 LIBMLX	=	./minilibx_linux/
 SRC_DIR =	src/
-SRC		=	main.c
-INC		=	car.h
+SRC		=	main.c EasterEgg.c
+INC		=	car.h EasterEgg.h
 SYS		=	$(shell uname -s)
 ifeq ($(SYS), Linux)
     LIBS    =    -Lminilibx_linux -lmlx -lXext -lX11 -lXrender

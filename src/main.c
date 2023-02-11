@@ -6,12 +6,13 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/05 16:14:04 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/11 13:17:21 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../car.h"
 
+inputsEE EasterEggLightsEE;
 // puts a pixel to an image.
 void	put_pixel(t_image *img, int x, int y, int colour)
 {
@@ -64,20 +65,29 @@ int	colourshift(int t, int r, int g, int b)
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-// draw rear right light to image.
-int	rear_right_main(t_car *car)
+// draw brake lights to image.
+int	brake_lights(t_car *car)
 {
 	int	x;
 	int	y;
 	int	x_length;
 	double	alpha;
 
-	x_length = 35;
+	x_length = 840;
 	y = 130;
-	if (!car->rear_lights)
+	if (!EasterEggLightsEE.BrakeLights)
 		alpha = 0;
 	else
-		alpha = car->strength_rear * 0.0008;
+		alpha = EasterEggLightsEE.BrakeLightsPWM * 0.0008;
+	while (++y < 250)
+	{
+		x = 805;
+		while (++x < x_length)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 3 * alpha, 3 * alpha));
+		x_length++;
+	}
+	x_length = 35;
+	y = 130;
 	while (++y < 250)
 	{
 		x = 658 - x_length;
@@ -88,44 +98,70 @@ int	rear_right_main(t_car *car)
 	return (0);
 }
 
-// draw rear left light to image.
-int	rear_left_main(t_car *car)
+void	parking_light_right(t_car *car)
 {
-	int	x;
-	int	y;
-	int	x_length;
+	int		x;
+	int		y;
+	int		i;
+	int		x_length;
 	double	alpha;
 
-	x_length = 840;
-	y = 130;
-	if (!car->rear_lights)
+	x_length = 333;
+	y = 175;
+	if (!EasterEggLightsEE.ParkingLightRight)
 		alpha = 0;
 	else
-		alpha = car->strength_rear * 0.0008;
-	while (++y < 250)
+		alpha = EasterEggLightsEE.ParkingLightRightPWM * 0.0008;
+	i = 0;
+	while (++y < 190)
 	{
-		x = 805;
+		x = 325 - i;
 		while (++x < x_length)
-			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 3 * alpha, 3 * alpha));
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 255 * alpha, 165 * alpha, 0 * alpha));
 		x_length++;
+		i++;
 	}
-	return (0);
+}
+
+void	parking_light_left(t_car *car)
+{
+	int		x;
+	int		y;
+	int		i;
+	int		x_length;
+	double	alpha;
+
+	x_length = 155 - 25;
+	y = 175;
+	if (!EasterEggLightsEE.ParkingLightLeft)
+		alpha = 0;
+	else
+		alpha = EasterEggLightsEE.ParkingLightLeftPWM * 0.0008;
+	i = 0;
+	while (++y < 190)
+	{
+		x = 122 - i;
+		while (++x < x_length)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 255 * alpha, 165 * alpha, 0 * alpha));
+		x_length++;
+		i++;
+	}
 }
 
 // draw front right light to image.
 int	front_right_main(t_car *car)
 {
-	int	x;
-	int	y;
-	int	x_length;
+	int		x;
+	int		y;
+	int		x_length;
 	double	alpha;
 
 	x_length = 333;
 	y = 130;
-	if (!car->front_lights)
+	if (!EasterEggLightsEE.FrontLightRight)
 		alpha = 0;
 	else
-		alpha = car->strength_front * 0.0008;
+		alpha = EasterEggLightsEE.FrontLightRightPWM * 0.0008;
 	while (++y < 250)
 	{
 		x = 303;
@@ -139,17 +175,17 @@ int	front_right_main(t_car *car)
 // draw front left light to image.
 int	front_left_main(t_car *car)
 {
-	int	x;
-	int	y;
-	int	x_length;
-	double	alpha;
+	int			x;
+	int			y;
+	int			x_length;
+	double		alpha;
 
 	x_length = 30;
 	y = 130;
-	if (!car->front_lights)
+	if (!EasterEggLightsEE.FrontLightLeft)
 		alpha = 0;
 	else
-		alpha = car->strength_front * 0.0008;
+		alpha = EasterEggLightsEE.FrontLightLeftPWM * 0.0008;
 	while (++y < 250)
 	{
 		x = 152 - x_length;
@@ -160,15 +196,30 @@ int	front_left_main(t_car *car)
 	return (0);
 }
 
+time_t	get_time_in_ms(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
 // puts car image and light image to window, updates light image with new values.
 int	light_loop(t_car *car)
 {
 	mlx_put_image_to_window(car->mlx, car->window, car->image.img, 0, 0);
 	mlx_put_image_to_window(car->mlx, car->window, car->alpha_image.img, 0, 0);
-	rear_left_main(car);
-	rear_right_main(car);
-	front_left_main(car);
-	front_right_main(car);
+	car->current_time = get_time_in_ms();
+	if (car->current_time - car->previous_time >= 10)
+	{
+		EasterEgg_Cyclic_10ms();
+		brake_lights(car);
+		front_left_main(car);
+		front_right_main(car);
+		parking_light_left(car);
+		parking_light_right(car);
+		car->previous_time = car->current_time;
+	}
 	return (0);
 }
 
@@ -186,50 +237,25 @@ int	key_press(int keycode, t_car *car)
 {
 	if (keycode == KEY_ESC)
 		ft_free(car);
-	else if (keycode == KEY_UP)
-	{
-		if (car->strength_front < 950)
-			car->strength_front += 50;
-	}
-	else if (keycode == KEY_DOWN)
-	{
-		if (car->strength_front > 50)
-			car->strength_front -= 50;
-	}
-	else if (keycode == KEY_RIGHT)
-	{
-		if (car->strength_rear < 950)
-			car->strength_rear += 50;
-	}
-	else if (keycode == KEY_LEFT)
-	{
-		if (car->strength_rear > 50)
-			car->strength_rear -= 50;
-	}
-	else if (keycode == KEY_F)
-	{
-		if (car->front_lights)
-			car->front_lights = 0;
-		else
-			car->front_lights = 1;
-	}
-	else if (keycode == KEY_R)
-	{
-		if (car->rear_lights)
-			car->rear_lights = 0;
-		else
-			car->rear_lights = 1;
-	}
+	// else if (keycode == KEY_UP)
+	// {
+	// 	EasterEggSequence = 1;
+	// 	if (car->strength_front < 950)
+	// 		car->strength_front += 50;
+	// }
+	// else if (keycode == KEY_DOWN)
+	// {
+	// 	if (car->strength_front > 50)
+	// 		car->strength_front -= 50;
+	// }
+	// else if (keycode == KEY_F)
+	// {
+	// 	if (car->front_lights)
+	// 		car->front_lights = 0;
+	// 	else
+	// 		car->front_lights = 1;
+	// }
 	return (0);
-}
-
-// initialise the car struct.
-void	init_vars(t_car *car)
-{
-	car->strength_front = 50;
-	car->strength_rear = 50;
-	car->front_lights = 0;
-	car->rear_lights = 0;
 }
 
 int	main()
@@ -238,7 +264,7 @@ int	main()
 	int x;
 	int y;
 
-	init_vars(&car);
+	car.previous_time = get_time_in_ms();
 	car.mlx = mlx_init();
 	car.window = mlx_new_window(car.mlx, 960, 782, "VW Easter Egg Demo");
 	car.image.img = mlx_new_image(car.mlx, 960, 782);
