@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/11 20:03:39 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/12 20:30:10 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,94 @@ void	put_image(t_image *dest, t_image *src)
 int	colourshift(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+void	fog_lights_front_right(t_car *car)
+{
+	int	x;
+	int	x_base;
+	int	y;
+	int	x_length;
+	double	alpha;
+
+	x_base = 330;
+	x_length = 1;
+	y = 152;
+	if (!EasterEggLightsEE.FogLights)
+		alpha = 0;
+	else
+		alpha = EasterEggLightsEE.FogLightsPWM * 0.0008;
+	while (y++ < 212)
+	{
+		x = x_base - x_length;
+		while (++x < x_base + x_length)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
+		if (y < 162)
+		{
+			if (y % 2)
+				x_length++;
+		}
+		else if (y >= 202)
+		{
+			if (y % 2)
+				x_length--;
+		}
+		else if (y > 172 && y < 182)
+			x_length += 2;
+		else if (y >= 192)
+			x_length--;
+		else if (y >= 182)
+			x_length -= 2;
+		else
+			x_length++;
+	}
+}
+
+void	fog_lights_front_left(t_car *car)
+{
+	int	x;
+	int	x_base;
+	int	y;
+	int	x_length;
+	double	alpha;
+
+	x_base = 126;
+	x_length = 1;
+	y = 152;
+	if (!EasterEggLightsEE.FogLights)
+		alpha = 0;
+	else
+		alpha = EasterEggLightsEE.FogLightsPWM * 0.0008;
+	while (y++ < 212)
+	{
+		x = x_base - x_length;
+		while (++x < x_base + x_length)
+			put_pixel(&car->alpha_image, x, y, colourshift(255 * alpha, 252 * alpha, 236 * alpha, 3 * alpha));
+		if (y < 162)
+		{
+			if (y % 2)
+				x_length++;
+		}
+		else if (y >= 202)
+		{
+			if (y % 2)
+				x_length--;
+		}
+		else if (y > 172 && y < 182)
+			x_length += 2;
+		else if (y >= 192)
+			x_length--;
+		else if (y >= 182)
+			x_length -= 2;
+		else
+			x_length++;
+	}
+}
+
+void	fog_lights_front(t_car *car)
+{
+	fog_lights_front_right(car);
+	fog_lights_front_left(car);
 }
 
 // draw brake lights to image.
@@ -271,6 +359,12 @@ void	right_indicator_side(t_car *car)
 	}
 }
 
+void	fog_lights(t_car *car)
+{
+	fog_lights_front(car);
+
+}
+
 void	right_indicator(t_car *car)
 {
 	right_indicator_side(car);
@@ -310,11 +404,22 @@ void	left_indicator(t_car *car)
 	// left_indicator_rear(car);
 }
 
+// puts frames per second to window, based on time to draw last frame.
+void	put_fps(t_car *car)
+{
+	char	*tmp;
+	char	*str;
+
+	tmp = ft_itoa(1000 / (car->current_time - car->previous_time));
+	str = ft_strjoin(tmp, "fps");
+	free(tmp);
+	mlx_string_put(car->mlx, car->window, 5, 10, colourshift(255, 0, 0, 0), str);
+	free(str);
+}
+
 // puts car image and light image to window, updates light image with new values.
 int	light_loop(t_car *car)
 {
-	mlx_put_image_to_window(car->mlx, car->window, car->image.img, 0, 0);
-	mlx_put_image_to_window(car->mlx, car->window, car->alpha_image.img, 0, 0);
 	car->current_time = get_time_in_ms();
 	if (car->current_time - car->previous_time >= 10)
 	{
@@ -322,10 +427,14 @@ int	light_loop(t_car *car)
 		brake_lights(car);
 		front_left_main(car);
 		front_right_main(car);
+		fog_lights(car);
 		parking_light_left(car);
 		parking_light_right(car);
 		left_indicator(car);
 		right_indicator(car);
+		mlx_put_image_to_window(car->mlx, car->window, car->image.img, 0, 0);
+		mlx_put_image_to_window(car->mlx, car->window, car->alpha_image.img, 0, 0);
+		put_fps(car);
 		car->previous_time = car->current_time;
 	}
 	return (0);

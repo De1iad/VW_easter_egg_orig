@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:03:35 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/11 12:48:37 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/12 20:20:22 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,10 @@ typedef struct s_car
 	t_image	alpha_image;
 	time_t	current_time;
 	time_t	previous_time;
+	time_t	loop_time;
 } t_car;
+
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_itoa(int n);
 
 #endif
