@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_libft.c                                         :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/24 21:51:41 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/12 20:10:39 by obibby           ###   ########.fr       */
+/*   Created: 2023/02/12 23:15:07 by obibby            #+#    #+#             */
+/*   Updated: 2023/02/12 23:16:06 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,53 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_strlcpy(ptr, s1, (ft_strlen(s1) + 1));
 	ft_strlcat(ptr, s2, len);
 	return (ptr);
+}
+
+int	charcount(long long x)
+{
+	int	i;
+
+	i = 0;
+	if (x == 0)
+		return (1);
+	if (x < 0)
+	{
+		i++;
+		x = -x;
+	}
+	while (x != 0)
+	{
+		x /= 10;
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_itoa(int n)
+{
+	long long	x;
+	int			i;
+	char		*str1;
+	int			sign;
+
+	x = n;
+	sign = 0;
+	i = charcount(x);
+	if (x < 0)
+	{
+		x = -x;
+		sign = 1;
+	}
+	str1 = malloc(sizeof(char) * (i + 1));
+	if (str1 == NULL)
+		return (NULL);
+	str1[i] = '\0';
+	while (i-- > sign)
+	{
+		str1[i] = (x % 10) + '0';
+		x /= 10;
+	}
+	if (n < 0)
+		str1[i] = '-';
+	return (str1);
 }

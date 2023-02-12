@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:03:35 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/12 20:20:22 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/12 23:38:47 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 	#define	KEY_R 114
 #endif
 
+extern inputsEE EasterEggLightsEE;
+
 typedef struct s_image
 {
 	void	*img;
@@ -63,7 +65,22 @@ typedef struct s_car
 	time_t	loop_time;
 } t_car;
 
+
+// image.c
+void	put_pixel(t_image *img, int x, int y, int colour);
+int		get_pixel_colour(t_image *img, int x, int y);
+void	put_image(t_image *dest, t_image *src);
+int		colourshift(int t, int r, int g, int b);
+
+// utils.c
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_itoa(int n);
+
+void	main_lights(t_car *car);
+void	fog_lights(t_car *car);
+void	indicators(t_car *car);
+void	parking_lights(t_car *car);
+void	brake_lights(t_car *car);
+
 
 #endif

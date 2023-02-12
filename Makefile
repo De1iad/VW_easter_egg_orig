@@ -6,7 +6,7 @@
 #    By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 20:17:58 by libacchu          #+#    #+#              #
-#    Updated: 2023/02/12 20:19:05 by obibby           ###   ########.fr        #
+#    Updated: 2023/02/12 23:38:24 by obibby           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	car_demo
 OBJ_DIR =	obj/
 LIBMLX	=	./minilibx_linux/
 SRC_DIR =	src/
-SRC		=	main.c EasterEgg.c ft_libft.c ft_itoa.c
+SRC		=	main.c EasterEgg.c image.c utils.c lights_main.c lights_fog.c lights_indicator.c lights_parking.c lights_brake.c
 INC		=	car.h EasterEgg.h
 SYS		=	$(shell uname -s)
 ifeq ($(SYS), Linux)
