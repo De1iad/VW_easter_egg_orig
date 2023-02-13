@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/12 23:37:03 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/13 10:40:00 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	light_loop(t_car *car)
 		fog_lights(car);
 		parking_lights(car);
 		indicators(car);
+		license_plate(car);
 		mlx_put_image_to_window(car->mlx, car->window, car->image.img, 0, 0);
 		mlx_put_image_to_window(car->mlx, car->window, car->alpha_image.img, 0, 0);
 		put_fps(car);
@@ -102,6 +103,46 @@ int	key_press(int keycode, t_car *car)
 		else
 			EasterEggLightsEE.FogLights = 1;
 		EasterEggLightsEE.FogLightsPWM = 500;
+	}
+	else if (keycode == KEY_Q)
+	{
+		if (EasterEggLightsEE.LicensePlateLight1)
+			EasterEggLightsEE.LicensePlateLight1 = 0;
+		else
+			EasterEggLightsEE.LicensePlateLight1 = 1;
+		EasterEggLightsEE.LicensePlateLight1PWM = 500;
+	}
+	else if (keycode == KEY_W)
+	{
+		if (EasterEggLightsEE.LicensePlateLight2)
+			EasterEggLightsEE.LicensePlateLight2 = 0;
+		else
+			EasterEggLightsEE.LicensePlateLight2 = 1;
+		EasterEggLightsEE.LicensePlateLight2PWM = 500;
+	}
+	else if (keycode == KEY_E)
+	{
+		if (EasterEggLightsEE.LicensePlateLight3)
+			EasterEggLightsEE.LicensePlateLight3 = 0;
+		else
+			EasterEggLightsEE.LicensePlateLight3 = 1;
+		EasterEggLightsEE.LicensePlateLight3PWM = 500;
+	}
+	else if (keycode == KEY_R)
+	{
+		if (EasterEggLightsEE.LicensePlateLight4)
+			EasterEggLightsEE.LicensePlateLight4 = 0;
+		else
+			EasterEggLightsEE.LicensePlateLight4 = 1;
+		EasterEggLightsEE.LicensePlateLight4PWM = 500;
+	}
+	else if (keycode == KEY_T)
+	{
+		if (EasterEggLightsEE.LicensePlateLight5)
+			EasterEggLightsEE.LicensePlateLight5 = 0;
+		else
+			EasterEggLightsEE.LicensePlateLight5 = 1;
+		EasterEggLightsEE.LicensePlateLight5PWM = 500;
 	}
 	return (0);
 }

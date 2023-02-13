@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:03:35 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/12 23:38:47 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/13 10:21:22 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,11 @@
 	#define	KEY_RIGHT 65363
 	#define	KEY_DOWN 65364
 	#define	KEY_F 102
+	#define	KEY_Q 113
+	#define	KEY_W 119
+	#define	KEY_E 101
 	#define	KEY_R 114
+	#define	KEY_T 116
 #endif
 
 extern inputsEE EasterEggLightsEE;
@@ -81,6 +85,7 @@ void	fog_lights(t_car *car);
 void	indicators(t_car *car);
 void	parking_lights(t_car *car);
 void	brake_lights(t_car *car);
+void	license_plate(t_car *car);
 
 
 #endif
