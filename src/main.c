@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/13 10:40:00 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/13 10:43:23 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	light_loop(t_car *car)
 	car->current_time = get_time_in_ms();
 	if (car->current_time - car->previous_time >= 10)
 	{
-		//EasterEgg_Cyclic_10ms();
+		EasterEgg_Cyclic_10ms();
 		brake_lights(car);
 		main_lights(car);
 		fog_lights(car);
