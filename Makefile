@@ -6,23 +6,23 @@
 #    By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 20:17:58 by libacchu          #+#    #+#              #
-#    Updated: 2023/02/18 21:16:22 by obibby           ###   ########.fr        #
+#    Updated: 2023/02/18 22:31:11 by obibby           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	car_demo
 OBJ_DIR =	obj/
-LIBMLX	=	./minilibx_linux/
 SRC_DIR =	src/
 SRC		=	main.c EasterEgg.c image.c utils.c lights_main.c lights_fog.c lights_indicator.c lights_parking.c lights_brake.c lights_license.c
 INC		=	car.h EasterEgg.h
 SYS		=	$(shell uname -s)
-#ifeq ($(SYS), Linux)
-#    LIBS    =	-Lminilibx_linux -lmlx -lXext -lX11 -lXrender
-#else
-#LIBS    =	-Lminilibx_linux -lmlx -framework OpenGL -framework AppKit
-LIBS    =    -Lminilibx_linux -lmlx -L/usr/X11/lib -lX11 -lXext -lXrender
-#endif
+ifeq ($(SYS), Linux)
+    LIBS    =	-Lminilibx_linux -lmlx -lXext -lX11 -lXrender
+	LIBMLX	=	./minilibx_linux/
+else
+	LIBS    =	-Lminilibx_linux -lmlx -framework OpenGL -framework AppKit
+	LIBMLX	=	./minilibx_mms/
+endif
 SRCS	=	$(addprefix $(SRC_DIR), $(SRC))
 OBJ		=	$(SRCS:%.c=$(OBJ_DIR)%.o)
 CC		=	gcc
