@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:03:35 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/18 21:14:24 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/18 23:07:41 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@
 	#define	KEY_T 116
 #else
 	#define	KEY_ESC 65307
-		// KEY_W = 119,
-		// KEY_A = 97,
-		// KEY_S = 115,
-		// KEY_D = 100,
 	#define KEY_UP 65362
 	#define KEY_LEFT 65361
 	#define	KEY_RIGHT 65363
@@ -90,6 +86,8 @@ void	indicators(t_car *car);
 void	parking_lights(t_car *car);
 void	brake_lights(t_car *car);
 void	license_plate(t_car *car);
+
+void	*make_image(void *mlx);
 
 
 #endif
