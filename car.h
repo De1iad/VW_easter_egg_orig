@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:03:35 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/13 10:21:22 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/18 21:14:24 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@
 	#define KEY_RIGHT 124
 	#define	KEY_DOWN 125
 	#define	KEY_F 3
+	#define	KEY_Q 113
+	#define	KEY_W 119
+	#define	KEY_E 101
 	#define KEY_R 15
+	#define	KEY_T 116
 #else
 	#define	KEY_ESC 65307
 		// KEY_W = 119,
