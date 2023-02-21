@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 10:09:44 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/13 10:42:07 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/21 16:05:10 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	license_one(t_car *car)
 	double	alpha;
 
 	x_length = 5;
-	x_base = 710;
+	x_base = 700;
 	y = 130;
 	if (!EasterEggLightsEE.LicensePlateLight1)
 	{
 		alpha = 0;
-		if (get_pixel_colour(&car->alpha_image, 710, 131) == colourshift(255 * alpha, 255 * alpha, 255 * alpha, 255 * alpha))
+		if (get_pixel_colour(&car->alpha_image, x_base, 131) == colourshift(255 * alpha, 255 * alpha, 255 * alpha, 255 * alpha))
 			return ;
 	}
 	else
@@ -49,12 +49,12 @@ void	license_two(t_car *car)
 	double	alpha;
 
 	x_length = 5;
-	x_base = 750;
+	x_base = 760;
 	y = 130;
 	if (!EasterEggLightsEE.LicensePlateLight2)
 	{
 		alpha = 0;
-		if (get_pixel_colour(&car->alpha_image, 750, 131) == colourshift(255 * alpha, 255 * alpha, 255 * alpha, 255 * alpha))
+		if (get_pixel_colour(&car->alpha_image, x_base, 131) == colourshift(255 * alpha, 255 * alpha, 255 * alpha, 255 * alpha))
 			return ;
 	}
 	else
@@ -77,12 +77,12 @@ void	license_three(t_car *car)
 	double	alpha;
 
 	x_length = 5;
-	x_base = 440;
+	x_base = 720;
 	y = 130;
 	if (!EasterEggLightsEE.LicensePlateLight3)
 	{
 		alpha = 0;
-		if (get_pixel_colour(&car->alpha_image, 440, 131) == colourshift(255 * alpha, 255 * alpha, 255 * alpha, 255 * alpha))
+		if (get_pixel_colour(&car->alpha_image, x_base, 131) == colourshift(255 * alpha, 255 * alpha, 255 * alpha, 255 * alpha))
 			return ;
 	}
 	else
@@ -105,12 +105,12 @@ void	license_four(t_car *car)
 	double	alpha;
 
 	x_length = 5;
-	x_base = 420;
+	x_base = 740;
 	y = 130;
 	if (!EasterEggLightsEE.LicensePlateLight4)
 	{
 		alpha = 0;
-		if (get_pixel_colour(&car->alpha_image, 420, 131) == colourshift(255 * alpha, 255 * alpha, 255 * alpha, 255 * alpha))
+		if (get_pixel_colour(&car->alpha_image, x_base, 131) == colourshift(255 * alpha, 255 * alpha, 255 * alpha, 255 * alpha))
 			return ;
 	}
 	else

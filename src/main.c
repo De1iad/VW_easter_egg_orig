@@ -6,7 +6,7 @@
 /*   By: obibby <obibby@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 16:02:37 by obibby            #+#    #+#             */
-/*   Updated: 2023/02/18 22:54:53 by obibby           ###   ########.fr       */
+/*   Updated: 2023/02/21 17:31:50 by obibby           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	light_loop(t_car *car)
 	car->current_time = get_time_in_ms();
 	if (car->current_time - car->previous_time >= 10)
 	{
-		EasterEgg_Cyclic_10ms();
+		//EasterEgg_Cyclic_10ms();
 		brake_lights(car);
 		main_lights(car);
 		fog_lights(car);
@@ -162,7 +162,7 @@ int	main()
 	car.xpm.addr = mlx_get_data_addr(car.xpm.img, &car.xpm.bpp, &car.xpm.line_size, &car.xpm.endian);
 	put_image(&car.image, &car.xpm);
 	mlx_destroy_image(car.mlx, car.xpm.img);
-	car.alpha_image.img = make_image(car.mlx, 960, 782);
+	car.alpha_image.img = make_image(car.mlx);
 	car.alpha_image.addr = mlx_get_data_addr(car.alpha_image.img, &car.alpha_image.bpp, &car.alpha_image.line_size, &car.alpha_image.endian);
 	mlx_hook(car.window, 17, 0, ft_free, &car);
 	mlx_hook(car.window, 2, 1L << 0, key_press, &car);
